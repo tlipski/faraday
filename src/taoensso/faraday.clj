@@ -67,7 +67,8 @@
             com.amazonaws.ClientConfiguration
             com.amazonaws.auth.BasicAWSCredentials
             com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
-            java.nio.ByteBuffer))
+            java.nio.ByteBuffer
+            java.math.BigDecimal))
 
 ;; TODO Add support for splitting data > 64KB over > 1 keys? This may be tough
 ;; to do well relative to the payoff. And I'm guessing there may be an official
@@ -120,10 +121,11 @@
                            (utils/bytes? x)))
 (defn- str->num    [^String s] (if (.contains s ".") (Double. s) (Long. s)))
 (defn- stringy?    [x] (or (string? x) (keyword? x)))
-(defn- simple-num? [x] (or (instance? Long    x)
-                           (instance? Double  x)
-                           (instance? Integer x)
-                           (instance? Float   x)))
+(defn- simple-num? [x] (or (instance? Long       x)
+                           (instance? Double     x)
+                           (instance? Integer    x)
+                           (instance? Float      x)
+                           (instance? BigDecimal x)))
 
 (defn- db-val->clj-val "Returns the Clojure value of given AttributeValue object."
   [^AttributeValue x]
